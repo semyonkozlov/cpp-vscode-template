@@ -15,7 +15,7 @@
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {},
 		"ghcr.io/devcontainers-contrib/features/apt-packages:1": {
-			"packages": "curl,wget,silversearcher-ag,"
+			"packages": "curl,wget,silversearcher-ag,clang-tidy"
 		}
 	},
 
@@ -24,7 +24,8 @@
 		"vscode": {
 			"extensions": [
 				"ClemensPeters.format-json",
-				"ms-vscode.cpptools-extension-pack"
+				"ms-vscode.cpptools-extension-pack",
+				"CS128.cs128-clang-tidy"
 			]
 		}
 	},
