@@ -3,6 +3,7 @@
 #include <boost/asio/spawn.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
+#include <nlohmann/json.hpp>
 
 #include <iostream>
 #include <memory>
