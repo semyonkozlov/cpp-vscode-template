@@ -1,0 +1,23 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/.",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools", 
+    
+    "clang-tidy.compilerArgs" : [ "-std=c++17" ], 
+    "clang-tidy.buildPath" : "build/", // needs to find the compile_commands.json
+    "clang-tidy.executable" : "clang-tidy", 
+
+    "editor.codeActionsOnSave": {
+        "source.fixAll.markdownlint": "explicit"
+    }, 
+
+    "cmake.parallelJobs": 0,
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        ".env*": "dotenv",
+        "functional": "cpp",
+        "*.tcc": "cpp",
+        "*.ipp": "cpp",
+        "ostream": "cpp",
+        "type_traits": "cpp"
+    } // use number of cores for make -j
+}
