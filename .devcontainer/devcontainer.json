@@ -3,7 +3,7 @@
 	"name": "C++",
 	"build": {
 		"dockerfile": "../Dockerfile",
-		"args": { "VARIANT": "debian-11" }
+		"args": { "VARIANT": "debian-12" }
 	},
 	// add to support debugging
 	"runArgs": [

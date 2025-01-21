@@ -1,5 +1,5 @@
 ARG VARIANT
-FROM mcr.microsoft.com/vscode/devcontainers/cpp:0-${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/cpp:${VARIANT}
 
 # tzdata confirmation override
 ENV DEBIAN_FRONTEND=noninteractive 
