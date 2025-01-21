@@ -4,9 +4,7 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
 #include <nlohmann/json.hpp>
-
-#include <iostream>
-#include <memory>
+#include <fmt/core.h>
 
 namespace beast = boost::beast;
 namespace ws = beast::websocket;
@@ -34,7 +32,7 @@ void doSession(tcp::socket socket, net::yield_context yield) {
       buffer.consume(buffer.size());
     }
   } catch (const std::exception& e) {
-    std::cerr << "Error: " << e.what() << std::endl;
+    fmt::println(stderr, "Error: {}", e.what());
   }
 }
 
@@ -74,7 +72,7 @@ int main() {
     // Run the I/O service
     ioc.run();
   } catch (const std::exception& e) {
-    std::cerr << "Error: " << e.what() << std::endl;
+    fmt::println(stderr, "Error: {}", e.what());
     return EXIT_FAILURE;
   }
 
