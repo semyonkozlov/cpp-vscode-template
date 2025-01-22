@@ -20,6 +20,10 @@ namespace po = boost::program_options;
 using tcp = net::ip::tcp;
 
 void doSession(tcp::socket socket) {
+  static int total_sessions = 0;
+
+  total_sessions++;
+  fmt::println("Start new session, total: {}", total_sessions);
   try {
     ws::stream<tcp::socket> ws{std::move(socket)};
 
@@ -40,7 +44,8 @@ void doSession(tcp::socket socket) {
       buffer.consume(buffer.size());
     }
   } catch (const std::exception& e) {
-    fmt::println("Error: {}", e.what());
+    total_sessions--;
+    fmt::println("Finish session: {}, total: {}", e.what(), total_sessions);
   }
 }
 
@@ -60,13 +65,13 @@ void doListen(net::io_context& ioc, tcp::endpoint endpoint) {
     acceptor.listen();
 
     for (;;) {
-      beast::error_code ec;
+      boost::system::error_code ec;
       tcp::socket socket{ioc};
       acceptor.async_accept(socket, boost::fibers::asio::yield[ec]);
       if (!ec) {
         fib::fiber(doSession, std::move(socket)).detach();
       } else {
-        fmt::println("Error: {}", ec.message());
+        fmt::println("Accept error: {}", ec.message());
       }
     }
   } catch (const std::exception& e) {
@@ -79,7 +84,7 @@ int main(int argc, char** argv) {
     const auto address = net::ip::make_address("0.0.0.0");
     unsigned short port = 0;
 
-    po::options_description desc{"Allowed options"}
+    po::options_description desc{"Allowed options"};
     desc.add_options()
       ("port,p", po::value<unsigned short>(&port)->default_value(5600))
     ;
