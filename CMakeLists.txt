@@ -7,7 +7,7 @@ project(server)
 set(CMAKE_CXX_STANDARD 20)
 
 # Find Boost libraries
-find_package(Boost REQUIRED COMPONENTS system fiber program_options)
+find_package(Boost REQUIRED ALL)
 find_package(Threads REQUIRED)
 
 # Fetch some deps
@@ -24,16 +24,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(fmt)
 
 # Add source files
-add_executable(server main.cpp yield.hpp detail/yield.hpp round_robin.hpp)
+add_executable(server main.cpp)
 
 # Link Boost.Beast with other Boost libraries
 target_link_libraries(server
     fmt::fmt
     nlohmann_json::nlohmann_json
-    Boost::fiber
-    Boost::boost
-    Boost::system
-    Boost::program_options
+    ${Boost_ALL_TARGETS}
     Threads::Threads
 )
 
