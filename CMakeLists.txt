@@ -23,10 +23,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(fmt)
 
-# Add source files
 add_executable(server main.cpp)
-
-# Link Boost.Beast with other Boost libraries
 target_link_libraries(server
     fmt::fmt
     nlohmann_json::nlohmann_json
