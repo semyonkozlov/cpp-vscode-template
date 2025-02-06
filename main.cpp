@@ -7,13 +7,25 @@
 #include <fmt/core.h>
 #include <nlohmann/json.hpp>
 
+#include <chrono>
+
 namespace cobalt = boost::cobalt;
 namespace beast = boost::beast;
 namespace ws = beast::websocket;
 namespace po = boost::program_options;
+namespace this_coro = cobalt::this_coro;
 using boost::asio::ip::tcp;
 using tcp_acceptor = cobalt::use_op_t::as_default_on_t<tcp::acceptor>;
 using tcp_socket = cobalt::use_op_t::as_default_on_t<tcp::socket>;
+using steady_timer = cobalt::use_op_t::as_default_on_t<boost::asio::steady_timer>;
+using std::chrono::steady_clock;
+using namespace std::literals::chrono_literals;
+
+cobalt::promise<void> timeout(steady_clock::duration d) {
+  steady_timer timer{co_await this_coro::executor};
+  timer.expires_after(d);
+  co_await timer.async_wait();
+}
 
 cobalt::promise<void> session(tcp_socket socket) {
   static int total_sessions = 0;
@@ -26,7 +38,9 @@ cobalt::promise<void> session(tcp_socket socket) {
 
     beast::flat_buffer buffer;
     while (true) {
-      std::size_t n = co_await ws.async_read(buffer);
+      // if no input for 5 seconds, raise exception and finish the session
+      co_await cobalt::race(ws.async_read(buffer), timeout(5s));
+
       ws.text(ws.got_text());
       co_await ws.async_write(buffer.data());
       buffer.consume(buffer.size());
@@ -38,7 +52,7 @@ cobalt::promise<void> session(tcp_socket socket) {
 }
 
 cobalt::generator<tcp_socket> listen(unsigned short port) {
-  tcp_acceptor acceptor{co_await cobalt::this_coro::executor, {tcp::v4(), 5600}};
+  tcp_acceptor acceptor{co_await this_coro::executor, {tcp::v4(), port}};
   while (true) {
     tcp_socket sock = co_await acceptor.async_accept();
     co_yield std::move(sock);
