@@ -1,10 +1,9 @@
+#include <fmt/core.h>
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
 #include <boost/cobalt.hpp>
 #include <boost/cobalt/main.hpp>
 #include <boost/program_options.hpp>
-
-#include <fmt/core.h>
 #include <nlohmann/json.hpp>
 
 #include <chrono>
@@ -32,10 +31,10 @@ cobalt::promise<void> session(tcp_socket socket) {
   total_sessions++;
   fmt::println("Start new session, total: {}", total_sessions);
 
-  try {
-    ws::stream<tcp_socket> ws{std::move(socket)};
-    co_await ws.async_accept();
+  ws::stream<tcp_socket> ws{std::move(socket)};
+  co_await ws.async_accept();
 
+  try {
     beast::flat_buffer buffer;
     while (true) {
       // if no input for 5 seconds, raise exception and finish the session
@@ -49,6 +48,8 @@ cobalt::promise<void> session(tcp_socket socket) {
     total_sessions--;
     fmt::println("Finish session: {}, total: {}", e.what(), total_sessions);
   }
+
+  co_await ws.async_close(ws::normal);
 }
 
 cobalt::generator<tcp_socket> listen(unsigned short port) {
