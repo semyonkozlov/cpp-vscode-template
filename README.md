@@ -1,6 +1,6 @@
 # C++ VSCode Template
 
-This repository provides a ready-to-use template for setting up a C++ development environment in Visual Studio Code using CMake and Docker. It includes popular libraries such as Boost, fmtlib, and nlohmann/json, along with essential development tools, all pre-configured in a Devcontainer.
+This repository provides a ready-to-use template for setting up a C++ development environment in Visual Studio Code using CMake and Docker. It includes popular libraries such as Boost, googletest, fmtlib, and nlohmann/json, along with essential development tools, all pre-configured in a Devcontainer.
 
 To play around with this, ensure you have VSCode and the [Remote Development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed. Then, simply click the button below:
 
