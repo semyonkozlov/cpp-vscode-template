@@ -3,27 +3,37 @@
 	"name": "C++",
 	"build": {
 		"dockerfile": "../Dockerfile",
-		"args": { "VARIANT": "debian-12" }
+		"args": {
+			"VARIANT": "debian-12",
+			"BOOST_VERSION": "1.87.0"
+		}
 	},
 	// add to support debugging
 	"runArgs": [
 		"--cap-add=SYS_PTRACE",
 		"--security-opt",
-		"seccomp=unconfined"
+		"seccomp=unconfined",
+		"--cap-add=PERFMON",
+		"--cap-add=SYS_ADMIN",
+		"--cap-add=SYS_BOOT",
+		"--cap-add=SYS_NICE",
+		"--cap-add=SYS_RESOURCE",
+		"--cap-add=SYS_TIME",
+		"--cap-add=SYS_TTY_CONFIG",
+		"--cap-add=SYS_RAWIO",
+		"--device=/dev/kmsg"
 	],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {},
 		"ghcr.io/devcontainers-contrib/features/apt-packages:1": {
-			"packages": "curl,wget,silversearcher-ag,clang-tidy"
+			"packages": "curl,wget,silversearcher-ag,clang-tidy,linux-perf"
 		}
 	},
-
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ClemensPeters.format-json",
 				"ms-vscode.cpptools-extension-pack",
 				"CS128.cs128-clang-tidy"
 			]
