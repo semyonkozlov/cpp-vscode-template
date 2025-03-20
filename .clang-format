@@ -4,4 +4,6 @@ BasedOnStyle: Google
 ColumnLimit: 120
 IncludeBlocks: Preserve
 SortIncludes: true
+BreakConstructorInitializers: BeforeComma
+BinPackArguments: false
 ...
